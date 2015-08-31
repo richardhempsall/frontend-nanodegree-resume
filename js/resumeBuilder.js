@@ -3,12 +3,13 @@ var bio =
 { "name" : "Persona Nongrata",
   "role" : "bossdude of the roolitude",
   "biopic"  : "images/nerdlaptop.png",
-  "skills" : ["java","oracle Developer","oracle application framework","SQL","pl/sql"],
+  "skills" : ["Java","Oracle Developer","Oracle Application Framework","SQL","pl/sql","korn shell"],
   "welcomeMessage" : "My name is rh and I welcome you sort of dudes",
   "contacts" : { "email"    : "png@example.com",
                  "mobile"   : "0404040202020",
                  "github"   : "ricardohemps",
-                 "location" : "Gent Belgium"
+                 "location" : "Gent Belgium",
+                 "twitter" : "@ricardohemps"
                }
 };
 
@@ -125,15 +126,45 @@ var education =
 };
 
 //
-// ADD PIC and NAME
+// ADD NAME and role
 //
 //var HTMLbioPic = '<img src="%data%" class="biopic">';
-var formattedBiopic = HTMLbioPic.replace("%data%",bio.biopic);
-$('#header').append(formattedBiopic);
 var formattedName = HTMLheaderName.replace("%data%",bio.name);
 $('#header').append(formattedName);
 var formattedRole = HTMLheaderRole.replace("%data%",bio.role.slice(0));
 $('#header').append(formattedRole);
+
+// Add Contact Details
+/*
+var HTMLcontactGeneric = '<li class="flex-item"><span class="orange-text">%contact%</span><span class="white-text">%data%</span></li>';
+var HTMLmobile = '<li class="flex-item"><span class="orange-text">mobile</span><span class="white-text">%data%</span></li>';
+var HTMLemail = '<li class="flex-item"><span class="orange-text">email</span><span class="white-text">%data%</span></li>';
+var HTMLtwitter = '<li class="flex-item"><span class="orange-text">twitter</span><span class="white-text">%data%</span></li>';
+var HTMLgithub = '<li class="flex-item"><span class="orange-text">github</span><span class="white-text">%data%</span></li>';
+var HTMLblog = '<li class="flex-item"><span class="orange-text">blog</span><span class="white-text">%data%</span></li>';
+var HTMLlocation = '<li class="flex-item"><span class="orange-text">location</span><span class="white-text">%data%</span></li>';
+*/
+
+//var formattedItem = HTMLcontactGeneric.replace("%data%",bio.contacts.mobile).replace("%contact%","mobile");
+//$('#header').append(formattedItem);
+$('#header').append(HTMLcontactsStart);
+formatContact("mobile",bio.contacts.mobile);
+formatContact("email",bio.contacts.email);
+formatContact("github",bio.contacts.github);
+formatContact("twitter",bio.contacts.twitter);
+formatContact("location",bio.contacts.location);
+
+function formatContact (itemName,itemValue)
+{
+  var formattedItem = HTMLcontactGeneric.replace("%data%",itemValue).replace("%contact%",itemName);
+  $('#contacts').append(formattedItem);
+}
+
+
+
+// Add Picture
+var formattedBiopic = HTMLbioPic.replace("%data%",bio.biopic);
+$('#header').append(formattedBiopic);
 
 
 //
@@ -154,7 +185,7 @@ if ( bio.skills.length > 0 )
   {
 
     formattedSkill = HTMLskills.replace("%data%",bio.skills[askill]);
-    $('#skills').append(formattedSkill);
+    $('#skills-h3').append(formattedSkill);
   }
 
 }
@@ -172,7 +203,7 @@ if ( bio.skills.length > 0 )
 
 
 //
-// ADD WORK EXPERIENCE ....
+// ADD WORK EXPERIENCE ...
 //
 
 $(document).click(function(loc)
