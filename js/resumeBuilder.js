@@ -2,11 +2,12 @@
 var bio =
 { "name" : "Persona Nongrata",
   "role" : "bossdude of the roolitude",
-  "skills" : ["java","oracle developer","oracle application framework"],
+  "biopic"  : "images/nerdlaptop.png",
+  "skills" : ["java","oracle Developer","oracle application framework","SQL","pl/sql"],
   "welcomeMessage" : "My name is rh and I welcome you sort of dudes",
   "contacts" : { "email"    : "png@example.com",
                  "mobile"   : "0404040202020",
-                 "github"   : "ababababc",
+                 "github"   : "ricardohemps",
                  "location" : "Gent Belgium"
                }
 };
@@ -124,8 +125,11 @@ var education =
 };
 
 //
-// ADD NAME
+// ADD PIC and NAME
 //
+//var HTMLbioPic = '<img src="%data%" class="biopic">';
+var formattedBiopic = HTMLbioPic.replace("%data%",bio.biopic);
+$('#header').append(formattedBiopic);
 var formattedName = HTMLheaderName.replace("%data%",bio.name);
 $('#header').append(formattedName);
 var formattedRole = HTMLheaderRole.replace("%data%",bio.role.slice(0));
@@ -140,8 +144,21 @@ console.log(bio.skills[0]);
 
 if ( bio.skills.length > 0 )
 {
+
+
+
+  var formattedSkill = "";
   $('#header').append(HTMLskillsStart);
 
+  for (askill in bio.skills)
+  {
+
+    formattedSkill = HTMLskills.replace("%data%",bio.skills[askill]);
+    $('#skills').append(formattedSkill);
+  }
+
+}
+/*
   var formattedSkill = HTMLskills.replace( "%data%",bio.skills[0] );
   $('#skills').append(formattedSkill);
 
@@ -151,7 +168,7 @@ if ( bio.skills.length > 0 )
   $('#skills').append("HHHHH");
 
   console.log("skills exist");
-}
+*/
 
 
 //
