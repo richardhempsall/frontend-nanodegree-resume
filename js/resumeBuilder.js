@@ -1,17 +1,76 @@
 
 var bio =
-{ "name" : "Persona Nongrata",
-  "role" : "bossdude of the roolitude",
+{ "name" : "Ricardo Hemps",
+  "role" : "Hypothetical Web Dev Persona",
   "biopic"  : "images/nerdlaptop.png",
-  "skills" : ["Java","Oracle Developer","Oracle Application Framework","SQL","pl/sql","korn shell"],
+  "skills" : ["javascript","css","html5","bootstrap","polymer"],
   "welcomeMessage" : "My name is rh and I welcome you sort of dudes",
   "contacts" : { "email"    : "png@example.com",
                  "mobile"   : "0404040202020",
                  "github"   : "ricardohemps",
                  "location" : "Gent Belgium",
                  "twitter" : "@ricardohemps"
-               }
+               },
+
+
+
+  display  : function() {
+
+    function formatContact (itemName,itemValue)  {
+      var formattedItem = HTMLcontactGeneric.replace("%data%",itemValue).replace("%contact%",itemName);
+      $('#contacts').append(formattedItem);
+    }
+
+    //
+    // ADD NAME and role
+    //
+
+    // Add Picture
+    var formattedBiopic = HTMLbioPic.replace("%data%",bio.biopic);
+    $('#header').append(formattedBiopic);
+
+
+    //var HTMLbioPic = '<img src="%data%" class="biopic">';
+    var formattedName = HTMLheaderName.replace("%data%",bio.name);
+      $('#header').append(formattedName);
+    var formattedRole = HTMLheaderRole.replace("%data%",bio.role.slice(0));
+      $('#header').append(formattedRole);
+
+    $('#header').append(HTMLcontactsStart);
+
+    formatContact("mobile",bio.contacts.mobile);
+    formatContact("email",bio.contacts.email);
+    formatContact("github",bio.contacts.github);
+    formatContact("twitter",bio.contacts.twitter);
+    formatContact("location",bio.contacts.location);
+
+    //
+    // ADD SKILLS
+    //
+
+    console.log(bio.skills[0]);
+
+    if ( bio.skills.length > 0 )
+    {
+
+      var formattedSkill = "";
+      $('#header').append(HTMLskillsStart);
+
+      for (askill in bio.skills) {
+        formattedSkill = HTMLskills.replace("%data%",bio.skills[askill]);
+        $('#skills-h3').append(formattedSkill);
+      }
+    }
+
+
+
+
+
+  }
+
 };
+
+
 
 
 var work =
@@ -34,8 +93,42 @@ var work =
             "dates"       : "1988-1990",
             "description" : "Working the swiss market hard Dude"
            }
-       ]
+       ],
+    display : function () {
+
+      for (i in work.jobs) {
+
+        console.log(i);
+
+        // 1
+        $('#workExperience').append(HTMLworkStart);
+
+        // 2 format job employer with HTMLworkEmployer and title with HTMLworkTitle
+        console.log(work.jobs[i].employer);
+        console.log(work.jobs[i].title);
+        console.log(work.jobs[i].location);
+        console.log(work.jobs[i].dates);
+        console.log(work.jobs[i].description);
+
+        // var formattedEmployer = HTMLworkEmployer.replace("%data%",work.jobs[i].employer);
+        var formattedEmployer     = fillup(HTMLworkEmployer,    work.jobs[i].employer);
+        var formattedTitle        = fillup(HTMLworkTitle,       work.jobs[i].title);
+        var formattedDates        = fillup(HTMLworkDates,       work.jobs[i].dates);
+        var formattedLocation     = fillup(HTMLworkLocation,    work.jobs[i].location);
+        var formattedDescription  = fillup(HTMLworkDescription, work.jobs[i].description);
+
+        // 3 append employer and title to the element with class work-entry:last
+        $(".work-entry:last").append(   formattedEmployer
+                                      + formattedTitle
+                                      + formattedDates
+                                      + formattedLocation
+                                      + formattedDescription
+                                    );
+      }
+  }
+
 };
+
 
 
 var projects =
@@ -59,32 +152,35 @@ var projects =
     	            "dates" : "October 2015",
     		          "description" : "first one b",
             	   	"images" : ["http://www.placehold.it/200x100","http://www.placehold.it/200x100"]
-                }]
+                }],
+
+      display : function() {
+
+                for (i in this.projects)
+                {
+
+
+                  var formattedTitle        = fillup(HTMLprojectTitle,projects.projects[i].title);
+                  var formattedDates        = fillup(HTMLprojectDates,projects.projects[i].dates);
+                  var formattedDescription  = fillup(HTMLprojectDescription,projects.projects[i].description);
+
+                  $('#projects').append(HTMLprojectStart);
+                  $('#projects').append(formattedTitle);
+                  $('#projects').append(formattedDates);
+                  $('#projects').append(formattedDescription);
+
+                  var formattedImage = "";
+                  for (pic in this.projects[i].images) {
+                    formattedImage = fillup(HTMLprojectImage,projects.projects[i].images[pic]);
+                    $('#projects').append(formattedImage);
+                  }
+
+                }
+
+              }
 };
 
-projects.display = function() {
-  for (i in projects.projects)
-  {
 
-
-    var formattedTitle				= fillup(HTMLprojectTitle,projects.projects[i].title);
-   	var formattedDates        = fillup(HTMLprojectDates,projects.projects[i].dates);
-    var formattedDescription  = fillup(HTMLprojectDescription,projects.projects[i].description);
-
-    $('#projects').append(HTMLprojectStart);
-    $('#projects').append(formattedTitle);
-    $('#projects').append(formattedDates);
-    $('#projects').append(formattedDescription);
-
-    var formattedImage = "";
-    for (pic in this.projects[i].images) {
-    	formattedImage = fillup(HTMLprojectImage,projects.projects[i].images[pic]);
-    	$('#projects').append(formattedImage);
-    }
-
-  }
-
-}
 
 
 
@@ -125,14 +221,6 @@ var education =
     ]
 };
 
-//
-// ADD NAME and role
-//
-//var HTMLbioPic = '<img src="%data%" class="biopic">';
-var formattedName = HTMLheaderName.replace("%data%",bio.name);
-$('#header').append(formattedName);
-var formattedRole = HTMLheaderRole.replace("%data%",bio.role.slice(0));
-$('#header').append(formattedRole);
 
 // Add Contact Details
 /*
@@ -147,63 +235,13 @@ var HTMLlocation = '<li class="flex-item"><span class="orange-text">location</sp
 
 //var formattedItem = HTMLcontactGeneric.replace("%data%",bio.contacts.mobile).replace("%contact%","mobile");
 //$('#header').append(formattedItem);
-$('#header').append(HTMLcontactsStart);
-formatContact("mobile",bio.contacts.mobile);
-formatContact("email",bio.contacts.email);
-formatContact("github",bio.contacts.github);
-formatContact("twitter",bio.contacts.twitter);
-formatContact("location",bio.contacts.location);
-
-function formatContact (itemName,itemValue)
-{
-  var formattedItem = HTMLcontactGeneric.replace("%data%",itemValue).replace("%contact%",itemName);
-  $('#contacts').append(formattedItem);
-}
 
 
 
-// Add Picture
-var formattedBiopic = HTMLbioPic.replace("%data%",bio.biopic);
-$('#header').append(formattedBiopic);
 
 
 //
-// ADD SKILLS
-//
-
-console.log(bio.skills[0]);
-
-if ( bio.skills.length > 0 )
-{
-
-
-
-  var formattedSkill = "";
-  $('#header').append(HTMLskillsStart);
-
-  for (askill in bio.skills)
-  {
-
-    formattedSkill = HTMLskills.replace("%data%",bio.skills[askill]);
-    $('#skills-h3').append(formattedSkill);
-  }
-
-}
-/*
-  var formattedSkill = HTMLskills.replace( "%data%",bio.skills[0] );
-  $('#skills').append(formattedSkill);
-
-  formattedSkill = HTMLskills.replace( "%data%",bio.skills[1] );
-  $('#skills').append(formattedSkill);
-
-  $('#skills').append("HHHHH");
-
-  console.log("skills exist");
-*/
-
-
-//
-// ADD WORK EXPERIENCE ...
+// Click Log
 //
 
 $(document).click(function(loc)
@@ -213,47 +251,13 @@ $(document).click(function(loc)
 
 console.log(work.length);
 
-var nothing = displaywork();
-
-function displaywork ()
-{
-  for (i in work.jobs)
-  {
-
-    console.log(i);
-
-    // 1
-    $('#workExperience').append(HTMLworkStart);
-
-    // 2 format job employer with HTMLworkEmployer and title with HTMLworkTitle
-    console.log(work.jobs[i].employer);
-    console.log(work.jobs[i].title);
-    console.log(work.jobs[i].location);
-    console.log(work.jobs[i].dates);
-    console.log(work.jobs[i].description);
-
-    // var formattedEmployer = HTMLworkEmployer.replace("%data%",work.jobs[i].employer);
-    var formattedEmployer     = fillup(HTMLworkEmployer,    work.jobs[i].employer);
-    var formattedTitle        = fillup(HTMLworkTitle,       work.jobs[i].title);
-    var formattedDates        = fillup(HTMLworkDates,       work.jobs[i].dates);
-    var formattedLocation     = fillup(HTMLworkLocation,    work.jobs[i].location);
-    var formattedDescription  = fillup(HTMLworkDescription, work.jobs[i].description);
-
-    // 3 append employer and title to the element with class work-entry:last
-    $(".work-entry:last").append(   formattedEmployer
-                                  + formattedTitle
-                                  + formattedDates
-                                  + formattedLocation
-                                  + formattedDescription
-                                );
-
-  }
-}
-
-//
-// ADD PROJECTS
-//
+// Call Display Functions
+bio.display();
 projects.display();
+work.display();
+
+// MAP AT THE BOTTOM
+$('#mapDiv').append(googleMap);
 
 
 astring = locationizer(work);
@@ -272,8 +276,7 @@ function locationizer(workobject) {
 
 };
 
-function fillup (source,data)
-{
+function fillup (source,data) {
 
   var mystring = source.replace("%data%",data);
   return mystring;
@@ -284,7 +287,6 @@ function fillup (source,data)
 //
 // INTERNATIONALIZE
 //
-
 
 $('#main').append(internationalizeButton);
 
@@ -303,7 +305,6 @@ function inName ()
 
 }
 
-// MAP AT THE BOTTOM
-$('#mapDiv').append(googleMap);
+
 
 
