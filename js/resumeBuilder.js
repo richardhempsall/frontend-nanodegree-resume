@@ -70,9 +70,6 @@ var bio =
 
 };
 
-
-
-
 var work =
 {  "jobs" :
 			 [  {"employer"    : "Coopers Animal Death",
@@ -131,8 +128,8 @@ var work =
 
 
 
-var projects =
-{ 	"projects" : [{
+var projects = {
+ 	"projects" : [{
                   "title" : "Portfolio Project",
                   "dates" : "August 2015",
                   "description" :   "My first project, this involved a lot of doing what I was told and typing "
@@ -152,92 +149,113 @@ var projects =
     	            "dates" : "October 2015",
     		          "description" : "first one b",
             	   	"images" : ["http://www.placehold.it/200x100","http://www.placehold.it/200x100"]
-                }],
+  }],
 
-      display : function() {
+  display : function() {
 
-                for (i in this.projects)
-                {
+    for (i in this.projects) {
 
 
-                  var formattedTitle        = fillup(HTMLprojectTitle,projects.projects[i].title);
-                  var formattedDates        = fillup(HTMLprojectDates,projects.projects[i].dates);
-                  var formattedDescription  = fillup(HTMLprojectDescription,projects.projects[i].description);
+      var formattedTitle        = fillup(HTMLprojectTitle,projects.projects[i].title);
+      var formattedDates        = fillup(HTMLprojectDates,projects.projects[i].dates);
+      var formattedDescription  = fillup(HTMLprojectDescription,projects.projects[i].description);
 
-                  $('#projects').append(HTMLprojectStart);
-                  $('#projects').append(formattedTitle);
-                  $('#projects').append(formattedDates);
-                  $('#projects').append(formattedDescription);
+      $('#projects').append(HTMLprojectStart);
+      $('#projects').append(formattedTitle);
+      $('#projects').append(formattedDates);
+      $('#projects').append(formattedDescription);
 
-                  var formattedImage = "";
-                  for (pic in this.projects[i].images) {
-                    formattedImage = fillup(HTMLprojectImage,projects.projects[i].images[pic]);
-                    $('#projects').append(formattedImage);
-                  }
+      var formattedImage = "";
+      for (pic in this.projects[i].images) {
+        formattedImage = fillup(HTMLprojectImage,projects.projects[i].images[pic]);
+        $('#projects').append(formattedImage);
+      }
 
-                }
+    }
 
-              }
+  }
 };
-
-
-
 
 
 var education =
 { 	"schools" :
 		[
 			{
-				"name" : "a school",
+				"name" : "Tynemouth Awesome School",
 				"location" : "Tynemouth England",
-				"degree" : "bsc",
+				"degree" : "BSc",
 				"majors" : ["science","art"],
-				"dates" : "whenever",
+				"dates" : 2010,
 				"url" : "school1@example.com"
 			},
 			{
-				"name" : "school 2",
-				"location" : "London England",
-				"degree" : "ba",
+				"name" : "Teesside polytechnic",
+				"location" : "Middlesbrough England",
+				"degree" : "BA",
 				"majors" : ["poetry","french"],
-				"dates" : "19something",
+				"dates" : 1932,
 				"url" : "school2@example.com"
 			}
     ],
     "onlinecourse" :
     [
     	{
-    	"title" : "ltl",
-    	"school" : "udemy",
+    	"title" : "Existential javascript",
+    	"school" : "Whodemy",
     	"dates" : "2010",
-    	"url" : "udemy.com"
+    	"url" : "http://udemy.example.com"
     	},
      	{
-    	"title" : "ltlsdf",
-    	"school" : "udemy",
+    	"title" : "Experimental css",
+    	"school" : "Codemy",
     	"dates" : "2011",
-    	"url" : "udemy.com"
+    	"url" : "htpp://udemy.example.com"
     	}
-    ]
-};
+    ],
 
 
-// Add Contact Details
+    display : function() {
+
+      var education = $('#education');
+      education.append(HTMLschoolStart);
+
+      for (aschool in this.schools) {
+
+        education.append(  HTMLschoolName.replace("%data%",this.schools[aschool].name)
+                         + HTMLschoolDegree.replace("%data%",this.schools[aschool].degree));
+        // education.append(HTMLschoolDegree.replace("%data%",this.schools[aschool].degree));
+        education.append(HTMLschoolDates.replace('%data%',this.schools[aschool].dates));
+        education.append(HTMLschoolLocation.replace('%data%',this.schools[aschool].location));
+        education.append(HTMLschoolMajor.replace('%data%',this.schools[aschool].majors));
+
+      }
+
+      education.append(HTMLonlineClasses);
+      for (amooc in this.onlinecourse) {
+        education.append(  HTMLonlineTitle.replace ('%data%',this.onlinecourse[amooc].title)
+                         + HTMLonlineSchool.replace('%data%',this.onlinecourse[amooc].school));
+        // education.append(HTMLonlineSchool.replace('%data%',this.onlinecourse[amooc].school));
+        education.append(HTMLonlineDates.replace ('%data%',this.onlinecourse[amooc].dates));
+        education.append(HTMLonlineURL.replace   ('%data%',this.onlinecourse[amooc].url));
+      }
+
+    }
 /*
-var HTMLcontactGeneric = '<li class="flex-item"><span class="orange-text">%contact%</span><span class="white-text">%data%</span></li>';
-var HTMLmobile = '<li class="flex-item"><span class="orange-text">mobile</span><span class="white-text">%data%</span></li>';
-var HTMLemail = '<li class="flex-item"><span class="orange-text">email</span><span class="white-text">%data%</span></li>';
-var HTMLtwitter = '<li class="flex-item"><span class="orange-text">twitter</span><span class="white-text">%data%</span></li>';
-var HTMLgithub = '<li class="flex-item"><span class="orange-text">github</span><span class="white-text">%data%</span></li>';
-var HTMLblog = '<li class="flex-item"><span class="orange-text">blog</span><span class="white-text">%data%</span></li>';
-var HTMLlocation = '<li class="flex-item"><span class="orange-text">location</span><span class="white-text">%data%</span></li>';
-*/
+    var HTMLschoolStart = '<div class="education-entry"></div>';
+    var HTMLschoolName = '<a href="#">%data%';
+    var HTMLschoolDegree = ' -- %data%</a>';
+    var HTMLschoolDates = '<div class="date-text">%data%</div>';
+    var HTMLschoolLocation = '<div class="location-text">%data%</div>';
+    var HTMLschoolMajor = '<em><br>Major: %data%</em>';
 
-//var formattedItem = HTMLcontactGeneric.replace("%data%",bio.contacts.mobile).replace("%contact%","mobile");
-//$('#header').append(formattedItem);
+var HTMLonlineClasses = '<h3>Online Classes</h3>';
 
+var HTMLonlineTitle = '<h2> href="#">%data% ;
+var HTMLonlineSchool = ' - %data%</a>;
 
-
+var HTMLonlineDates = '<div class="date-text">%data%</div>';
+var HTMLonlineURL = '<br><br><br><a href="#">%data%</a>'; */
+};
 
 
 //
@@ -252,9 +270,11 @@ $(document).click(function(loc)
 console.log(work.length);
 
 // Call Display Functions
-bio.display();
-projects.display();
 work.display();
+projects.display();
+bio.display();
+education.display();
+
 
 // MAP AT THE BOTTOM
 $('#mapDiv').append(googleMap);
